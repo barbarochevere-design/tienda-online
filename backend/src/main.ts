@@ -35,9 +35,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  // 4. Integrar Scalar en la ruta '/api' requerida por la guía
+  // 4. Integrar Scalar en la ruta '/reference' (NO usar '/api' porque choca con los endpoints)
   app.use(
-    '/api', // <-- MODIFICADO: Cambiado de '/reference' a '/api' según requerimiento del PDF
+    '/reference',
     apiReference({
       spec: {
         content: document,
