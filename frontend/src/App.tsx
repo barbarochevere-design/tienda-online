@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Layers, Users, ShoppingCart, ClipboardList } from 'lucide-react';
 import Categorias from './components/Categorias.tsx';
 import Clientes from './components/Clientes.tsx';

@@ -18,15 +18,25 @@ import { OrdenProducto } from './orden-producto/entities/orden-producto.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres', // <-- Requerido por la práctica
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME, // <-- Leerá dinámicamente tu BD de producción o local
+      type: 'postgres',
+      ...(process.env.DATABASE_URL
+        ? {
+            url: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: false },
+          }
+        : {
+            host: process.env.DB_HOST || 'localhost',
+            port: parseInt(process.env.DB_PORT || '5432', 10),
+            username: process.env.DB_USERNAME || 'postgres',
+            password: process.env.DB_PASSWORD || 'postgres',
+            database: process.env.DB_NAME || 'tienda_online',
+            ssl:
+              process.env.DB_SSL === 'true'
+                ? { rejectUnauthorized: false }
+                : false,
+          }),
       entities: [Categoria, Cliente, Producto, Orden, OrdenProducto],
-      synchronize: true, // <-- El PDF exige explícitamente que sea true de manera directa
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+      synchronize: process.env.TYPEORM_SYNCHRONIZE === 'false' ? false : true,
     }),
     CategoriasModule,
     ClientesModule,
