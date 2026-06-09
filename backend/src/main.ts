@@ -7,10 +7,17 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 1. Habilitar prefijo global para la API REST
+  // 1. Habilitar CORS para que el frontend pueda consumir la API desde otro origen
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
+  // 2. Habilitar prefijo global para la API REST
   app.setGlobalPrefix('api');
 
-  // 2. Configurar las validaciones globales
+  // 3. Configurar las validaciones globales
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
